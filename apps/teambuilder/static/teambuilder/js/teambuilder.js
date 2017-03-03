@@ -115,7 +115,6 @@ function createChart(arr, calc) {
         dataSource: data,
         seriesDefaults: {
             type: "radarArea",
-            // style: ""
         },
         series: [
           {
