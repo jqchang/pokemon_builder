@@ -69,6 +69,7 @@ class PokeManager(models.Manager):
     sp_atk = int(postData['spa_base'])
     sp_def = int(postData['spd_base'])
     speed = int(postData['spe_base'])
+    pkid = int(postData['id'])
     hp = (2 * int(hp)) + int(postData['hp_iv']) + (int(postData['hp_ev']) / 4) + 110
     attack = (2 * int(attack)) + int(postData['atk_iv']) + (int(postData['atk_ev']) / 4) + 5
     defense = (2 * int(defense)) + int(postData['def_iv']) + (int(postData['def_ev']) / 4) + 5
@@ -135,8 +136,7 @@ class PokeManager(models.Manager):
     if postData['nature'] == 'careful':
       sp_def *= 1.1
       sp_atk *= 0.9
-    array = [int(hp), int(attack), int(defense), int(sp_atk), int(sp_def), int(speed)]
-    print Pokemon.objects.all()
+    array = [int(hp), int(attack), int(defense), int(sp_atk), int(sp_def), int(speed), int(pkid)]
     # obj = {"hp": int(hp), "attack": int(attack), "defense": int(defense), "sp_atk": int(sp_atk), "sp_def": int(sp_def), "speed": int(speed)}
     return array
 

@@ -57,20 +57,12 @@ def stat_ajax(request):
                     errors.append("An error has occurred. Please log out and log in again.")
                     return JsonResponse({"success":False, "errors":errors})
                 pokemon = Pokemon.objects.create(pokeid=request.POST['id'], hp=new_stat[0], atk=new_stat[1], defense=new_stat[2], spatk=new_stat[3], spdef=new_stat[4], speed=new_stat[5], nature=request.POST['nature'], trainer=user)
-                pk_stat = {
-                    "pokeid":pokemon.pokeid,
-                    "hp":pokemon.hp,
-                    "atk":pokemon.atk,
-                    "defense":pokemon.defense,
-                    "spatk":pokemon.spatk,
-                    "spdef":pokemon.spdef,
-                    "speed":pokemon.speed
-                }
             # display on roster
             # # return createchart()
-                return JsonResponse({"success":True, "pokemon":pk_stat})
-            else:
-                return JsonResponse({"success":True, "pokemon":pokemon})
+            return JsonResponse({"success":True, "pokemon":new_stat})
+            # else:
+            #     return JsonResponse({"success":True, "pokemon":pokemon})
+
         else:
             return JsonResponse({"success":False, "errors":errors})
 

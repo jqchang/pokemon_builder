@@ -64,7 +64,7 @@ $(document).ready(function() {
         if(obj.success) {
           // run the graph stuff
           $('.errors').html("");
-          pkmndata(obj.pokemon.id, obj.pokemon);
+          pkmndata(obj.pokemon[6], obj.pokemon);
         }
         else {
           errors_html = ""
@@ -124,7 +124,7 @@ function createChart(arr, calc) {
           },
           {
             name: "Calculated stats",
-            data: [calc.hp,calc.atk,calc.defense,calc.speed,calc.spdef,calc.spatk]
+            data: [calc[0],calc[1],calc[2],calc[5],calc[4],calc[3]]
           },
         ],
         categoryAxis: {
