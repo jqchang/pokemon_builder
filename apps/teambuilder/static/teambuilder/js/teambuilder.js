@@ -15,6 +15,7 @@ $(document).ready(function() {
   });
 
   $(document).on("click", "img", function() {
+    pkmndata($(this).attr('id').substring(3))
     $('.stats #numname').text("Loading..")
     $("body").css("cursor", "progress");
     $('.stats #types').text("")
@@ -33,8 +34,8 @@ $(document).ready(function() {
       $('#base_atk').html(`${data.attack}<input type='hidden' name='atk_base' value=${data.attack}>`)
       $('#base_def').html(`${data.defense}<input type='hidden' name='def_base' value=${data.defense}>`)
       $('#base_spa').html(`${data.sp_atk}<input type='hidden' name='spa_base' value=${data.sp_atk}>`)
-      $('#base_spe').html(`${data.sp_def}<input type='hidden' name='spd_base' value=${data.sp_def}>`)
-      $('#base_spd').html(`${data.speed}<input type='hidden' name='spe_base' value=${data.speed}>`)
+      $('#base_spd').html(`${data.sp_def}<input type='hidden' name='spd_base' value=${data.sp_def}>`)
+      $('#base_spe').html(`${data.speed}<input type='hidden' name='spe_base' value=${data.speed}>`)
       var type = data.types[0].name[0].toUpperCase() + data.types[0].name.substring(1);
       if(data.types.length > 1) {
         type = data.types[1].name[0].toUpperCase() + data.types[1].name.substring(1) + " " + type;
@@ -66,3 +67,92 @@ $(document).ready(function() {
     return false;
   });
 });
+
+function pkmndata(num){
+    var url = "http://pokeapi.co/api/v1/pokemon/" + num + "/";
+    var that = $.get(url, function(res) {
+        var hp = res.hp;
+        var attack = res.attack;
+        var defense = res.defense;
+        var spattack = res.sp_atk;
+        var spdef = res.sp_def;
+        var speed = res.speed;
+        var name = res.name;
+        var arr = [hp, attack, defense, spattack, spdef, speed, name];
+        createChart(arr);
+    }, "json");
+}
+
+function createChart(arr, calc) {
+
+  var data = [
+    {"Criteria":"HP", "stat":100+2*arr[0],},
+    {"Criteria":"Attack", "stat":5+2*arr[1],},
+    {"Criteria":"Defense", "stat":5+2*arr[2],},
+    {"Criteria":"Speed", "stat":5+2*arr[5],},
+    {"Criteria":"Sp.Defense", "stat":5+2*arr[4],},
+    {"Criteria":"Sp.Attack", "stat":5+2*arr[3],}
+  ]
+  if (calc != undefined) {
+    $("#chart").kendoChart({
+        title: {
+            text: arr[6]
+        },
+        dataSource: data,
+        seriesDefaults: {
+            type: "radarArea",
+            // style: ""
+        },
+        series: [
+          {
+            name: "Base stats",
+            data: [100+2*arr[0],5+2*arr[1],5+2*arr[2],5+2*arr[5],5+2*arr[4],5+2*arr[3]]
+          },
+          {
+            name: "Calculated stats",
+            data: [calc[0],calc[1],calc[2],calc[5],calc[4],calc[3]]
+          },
+        ],
+        categoryAxis: {
+            field: "Criteria"
+        },
+        valueAxis: {
+          max: 500
+        },
+        tooltip: {
+            visible: true,
+            format: "{0}"
+        },
+        theme: "Fiori"
+    });
+  } else {
+    $("#chart").kendoChart({
+        title: {
+            text: arr[6]
+        },
+        dataSource: data,
+        seriesDefaults: {
+            type: "radarArea",
+            // style: ""
+        },
+        series: [
+          {
+            name: "Base stats",
+            data: [100+2*arr[0],5+2*arr[1],5+2*arr[2],5+2*arr[5],5+2*arr[4],5+2*arr[3]]
+          },
+        ],
+        categoryAxis: {
+            field: "Criteria"
+        },
+        valueAxis: {
+          max: 500
+        },
+        tooltip: {
+            visible: true,
+            format: "{0}"
+        },
+        theme: "Fiori"
+    });
+  }
+}
+$(document).bind("kendo:skinChange", createChart);

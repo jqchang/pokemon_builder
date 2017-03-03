@@ -6,6 +6,10 @@
     {%load staticfiles%}
     <script src="{%static 'teambuilder/js/jquery.min.js'%}"></script>
     <script src="{%static 'teambuilder/js/teambuilder.js'%}"></script>
+    <link rel="stylesheet" href="//kendo.cdn.telerik.com/2015.2.805/styles/kendo.common-bootstrap.min.css" />
+    <link rel="stylesheet" href="//kendo.cdn.telerik.com/2015.2.805/styles/kendo.bootstrap.min.css" />
+    <script src="//kendo.cdn.telerik.com/2015.2.805/js/jquery.min.js"></script>
+    <script src="//kendo.cdn.telerik.com/2015.2.805/js/kendo.all.min.js"></script>
   </head>
   <body>
     <h1>Welcome, {{user.username}}</h1>
@@ -17,6 +21,9 @@
     </div>
     <ul class='errors'>
     </ul>
+    <div class="demo-section k-content">
+        <div id="chart"></div>
+    </div>
     <div class='stats'>
       <table>
         <tbody>
