@@ -198,8 +198,6 @@ class Pokemon(models.Model):
     speed = models.IntegerField()
     nature = models.CharField(max_length=255)
     trainer = models.ForeignKey(User, related_name="pkmn")
-    # typeI = models.CharField(max_length=255)
-    # typeII = models.CharField(max_length=255, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     objects = PokeManager()

@@ -51,10 +51,7 @@ def success(request):
         return redirect('/prof')
     else:
         print "**WELCOME TO THE JUNGLE**"
-        context = {
-            'user': User.objects.get(id=request.session['user_id']),
-        }
-        return render(request, 'teambuilder/index.html', context)
+        return redirect('/teambuilder')
 
 def logout(request):
     if request.method == "GET":
