@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Battle</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href={%static "teambuilder/css/battle.css"%}>
+    </head>
+    <body>
+        <div class="roster">
+            <table>
+                <tr><th>OPPONENTS</th></tr>
+                <tr><td>user1</td></tr>
+                <tr><td>user2</td></tr>
+                <tr><td>user3</td></tr>
+                <tr><td>user4</td></tr>
+                <tr><td>user5</td></tr>
+                <tr><td>user6</td></tr>
+            </table>
+        </div>
+        <div class="battle">
+            <div class="user">
+                <p>{{user.username}}</p>
+                <p>
+                    {% if user.pkmn.all %}
+                    {% for pk in user.pkmn.all %}
+                    <img src="{% static "teambuilder/img/" %}{{pk.pokeid}}.png" %} />
+                    {% endfor %}
+                    {% else %}
+                    No pokemon enlisted.
+                    {% endif %}
+                </p>
+            </div>
+            <h3>VS</h3>
+            <div class="opponent">
+                <p>{{opponent.username}} {{opponent.id}}</p>
+                <p>
+                    {% if opponent.pkmn.all %}
+                    {% for pk in opponent.pkmn.all %}
+                    <img src="{% static "teambuilder/img/" %}{{pk.pokeid}}.png" %} />
+                    {{pk.pokeid}}
+                    {% endfor %}
+                    {% else %}
+                    No pokemon enlisted.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="outcome">
+                <button id="result">Result</button>
+            </div>
+        </div>
+        <hr>
+        <div class="history">
+            <div class="user-history">
+                <table>
+                    <h3>YOUR BATTLE HISTORY</h3>
+                    <tr>
+                        <th>OUTCOME</th>
+                        <th>OPPONENTS</th>
+                    </tr>
+                    <tr>
+                        <td class="left">WIN</td>
+                        <td>YOU VS USER2</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="latest-history">
+                <table>
+                    <h3>LATEST BATTLES</h3>
+                    <tr>
+                        <th>WINNER</th>
+                        <th>OPPONENTS</th>
+                    </tr>
+                    <tr>
+                        <td class="left">USER1</td>
+                        <td>USER1 VS USER2</td>
+                    </tr>
+                </table>
+            </div>
+            <div class="leaderboard">
+                <table>
+                    <h3>LEADERBOARD</h3>
+                    <tr>
+                        <th>RANK</th>
+                        <th>USERNAME</th>
+                    </tr>
+                    <tr>
+                        <td class="left">1</td>
+                        <td class="left">ASH</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

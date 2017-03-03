@@ -32,6 +32,15 @@ def stat_ajax(request):
         else:
             return JsonResponse({"success":False, "errors":Pokemon.objects.validation(request.POST)[1]})
 
+def battle(request):
+    context = {
+        'user': User.objects.get(id=request.session['user_id']),
+        'allusers': User.objects.all(),
+        'opponent': User.objects.get(username="jqchang")
+    }
+    return render(request, 'teambuilder/battle.html', context)
+
+
 '''
 route planning:
 calculate(postData, create=False): sends POST async request to /calc/, route runs validate
