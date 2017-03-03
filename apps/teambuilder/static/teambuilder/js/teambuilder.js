@@ -51,19 +51,24 @@ $(document).ready(function() {
   });
 
   $('#statform').submit(function() {
+    var saving = false;
     var formdata = $('#statform').serialize()
     if($('#statform').attr('save') == "true") {
       formdata+="&save=true";
+      saving = true;
     }
-    console.log("Form Data:")
-    console.log(formdata)
     $.ajax({
       url:"/teambuilder/stat_ajax/",
       method:"POST",
       success:function(obj) {
         if(obj.success) {
           // run the graph stuff
-          $('.errors').html("");
+          if(saving) {
+            $('.errors').html("<li>Pokemon has been successfully added to your roster.</li>")
+          }
+          else {
+            $('.errors').html("");
+          }
           pkmndata(obj.pokemon[6], obj.pokemon);
         }
         else {

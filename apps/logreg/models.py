@@ -140,8 +140,11 @@ class PokeManager(models.Manager):
     # obj = {"hp": int(hp), "attack": int(attack), "defense": int(defense), "sp_atk": int(sp_atk), "sp_def": int(sp_def), "speed": int(speed)}
         return array
 
-    def validation(self, postData):
+    def validation(self, postData, user_id):
         errors = []
+        if postData["id"] == "":
+            errors.append("Please select a Pokemon!")
+            return (False, errors)
         pokemon = {
             "id":int(postData["id"]),
             "nature":postData["nature"],
@@ -166,8 +169,10 @@ class PokeManager(models.Manager):
                 "spe":int(postData["spe_base"])
             }
         }
-        if postData["id"] == "":
-            errors.append("Please select a Pokemon!")
+        # user = User.objects.get(id=user_id)
+        roster = Pokemon.objects.filter(trainer__id=user_id)
+
+
         if postData["nature"] == "":
             errors.append("Please select a nature.")
         if pokemon['hp_ev'] + pokemon['atk_ev'] + pokemon['def_ev'] + pokemon['spa_ev'] + pokemon['spd_ev'] + pokemon['spe_ev'] > 510:
@@ -176,6 +181,8 @@ class PokeManager(models.Manager):
             errors.append("Each EV cannot be greater than 255.")
         if pokemon['hp_iv'] > 31 or pokemon['atk_iv'] > 31 or pokemon['def_iv'] > 31 or pokemon['spa_iv'] > 31 or pokemon['spd_iv'] > 31 or pokemon['spe_iv'] > 31:
             errors.append("Each IV cannot be greater than 31.")
+        if len(roster) >= 6:
+            errors.append("You cannot have more than 6 Pokemon.")
         if len(errors):
             return (False, errors)
         return (True, errors)
