@@ -12,8 +12,14 @@ $(document).ready(function() {
     for (i in data.results) {
       $('#naturelist').append(`<option value='${data.results[i].name}'>${data.results[i].name}</option>`)
     }
-  });
 
+  });
+  $('#save').click(function() {
+    $('#statform').attr('save', 'true')
+  });
+  $('#calc').click(function() {
+    $('#statform').attr('save', 'false')
+  });
   $(document).on("click", "img", function() {
     pkmndata($(this).attr('id').substring(3))
     $('.stats #numname').text("Loading..")
@@ -45,14 +51,20 @@ $(document).ready(function() {
   });
 
   $('#statform').submit(function() {
+    var formdata = $('#statform').serialize()
+    if($('#statform').attr('save') == "true") {
+      formdata+="&save=true";
+    }
+    console.log("Form Data:")
+    console.log(formdata)
     $.ajax({
       url:"/teambuilder/stat_ajax/",
       method:"POST",
       success:function(obj) {
         if(obj.success) {
           // run the graph stuff
-          $('.errors').html("")
-          console.log(obj)
+          $('.errors').html("");
+          pkmndata(obj.pokemon.id, obj.pokemon);
         }
         else {
           errors_html = ""
@@ -62,13 +74,14 @@ $(document).ready(function() {
           $('.errors').html(errors_html)
         }
       },
-      data : $('#statform').serialize()
+      data : formdata
     });
+    console.log(formdata);
     return false;
   });
 });
 
-function pkmndata(num){
+function pkmndata(num, obj){
     var url = "http://pokeapi.co/api/v1/pokemon/" + num + "/";
     var that = $.get(url, function(res) {
         var hp = res.hp;
@@ -79,12 +92,13 @@ function pkmndata(num){
         var speed = res.speed;
         var name = res.name;
         var arr = [hp, attack, defense, spattack, spdef, speed, name];
-        createChart(arr);
+        createChart(arr, obj);
     }, "json");
 }
 
 function createChart(arr, calc) {
-
+  console.log("calc");
+  console.log(calc);
   var data = [
     {"Criteria":"HP", "stat":100+2*arr[0],},
     {"Criteria":"Attack", "stat":5+2*arr[1],},
@@ -110,7 +124,7 @@ function createChart(arr, calc) {
           },
           {
             name: "Calculated stats",
-            data: [calc[0],calc[1],calc[2],calc[5],calc[4],calc[3]]
+            data: [calc.hp,calc.atk,calc.defense,calc.speed,calc.spdef,calc.spatk]
           },
         ],
         categoryAxis: {

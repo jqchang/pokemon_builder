@@ -38,7 +38,7 @@
           <tr>
             <td>Stats:</td>
             <td>
-              <form action='/teambuilder/stat_ajax/' method='POST' id='statform'>
+              <form action='/teambuilder/stat_ajax/' method='POST' save='false' id='statform'>
                 {%csrf_token%}
                 <input type='hidden' name='id' id='id' value="">
                 Nature: <select name='nature' id='naturelist'>
@@ -90,7 +90,8 @@
                     </tr>
                   </tbody>
                 </table>
-                <input type='submit' value='Calculate' id='calc'>
+                <button id='calc'>Calculate</button>
+                <button id='save'>Save</button>
               </form>
             </td>
           </tr>

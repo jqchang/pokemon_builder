@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import JsonResponse
-from ..logreg.models import User
+from ..logreg.models import User, Pokemon
 from django.contrib import messages
 # Create your views here.
 def index(request):
@@ -42,14 +42,37 @@ def stat_ajax(request):
                 "spe":request.POST["spe_base"]
             }
         }
+
         if request.POST["id"] == "":
             errors.append("Please select a Pokemon!")
         if request.POST["nature"] == "":
             errors.append("Please select a nature!")
-    if len(errors) == 0:
-        return JsonResponse({"success":True, "pokemon":pokemon})
-    else:
-        return JsonResponse({"success":False, "errors":errors})
+        if len(errors) == 0:
+            new_stat = Pokemon.objects.stat_calc(request.POST)
+            if "save" in request.POST:
+                print "Attempting to save"
+                try:
+                    user = User.objects.get(id=request.session["user_id"])
+                except User.DoesNotExist:
+                    errors.append("An error has occurred. Please log out and log in again.")
+                    return JsonResponse({"success":False, "errors":errors})
+                pokemon = Pokemon.objects.create(pokeid=request.POST['id'], hp=new_stat[0], atk=new_stat[1], defense=new_stat[2], spatk=new_stat[3], spdef=new_stat[4], speed=new_stat[5], nature=request.POST['nature'], trainer=user)
+                pk_stat = {
+                    "pokeid":pokemon.pokeid,
+                    "hp":pokemon.hp,
+                    "atk":pokemon.atk,
+                    "defense":pokemon.defense,
+                    "spatk":pokemon.spatk,
+                    "spdef":pokemon.spdef,
+                    "speed":pokemon.speed
+                }
+            # display on roster
+            # # return createchart()
+                return JsonResponse({"success":True, "pokemon":pk_stat})
+            else:
+                return JsonResponse({"success":True, "pokemon":pokemon})
+        else:
+            return JsonResponse({"success":False, "errors":errors})
 
 '''
 route planning:
@@ -61,8 +84,5 @@ delete(roster_id): sends GET request to delete the pokemon
 
 battle(player_id): Roster model objects compare each other, then returns winner, switching their leaderboard positions
     generates new leaderboard position for unranked players
-
-
-
 
 '''

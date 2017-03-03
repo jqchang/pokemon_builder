@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import User, Pokemon, Roster
+from .models import User, Pokemon
 from django.contrib import messages
 # Create your views here.
 def start(request):
