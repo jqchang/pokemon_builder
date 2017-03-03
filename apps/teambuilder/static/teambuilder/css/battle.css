@@ -1,0 +1,52 @@
+*{
+    padding: 0px;
+    margin: 0px;
+}
+body{
+    white-space: nowrap;
+}
+.roster{
+    display: inline-block;
+    /*border: 1px solid black;*/
+    text-align: center;
+    width: 30%;
+    margin: 10px;
+}
+.battle{
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    /*border: 1px solid black;*/
+    width: 40%;
+    margin: 10px;
+}
+.outcome{
+    margin-top: 15%;
+}
+.history{
+    display: block;
+    margin: 20px 10px;
+}
+.user, .opponent {
+    margin: 10px;
+}
+hr{
+    margin: 10px 0px 10px 0px;
+}
+table {
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 10px;
+}
+.user-history, .latest-history, .leaderboard {
+    width: 33%;
+    display: inline-block;
+    white-space: normal;
+}
+.left{
+    text-align: center;
+}
